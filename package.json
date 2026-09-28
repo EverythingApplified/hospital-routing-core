@@ -16,8 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "prepare": "npm run build"
+    "build": "tsc"
   },
   "devDependencies": {
     "typescript": "^5.9.2"
