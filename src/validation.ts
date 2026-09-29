@@ -1,6 +1,7 @@
-import type { CheckpointType, Direction, MoveType } from "./types";
-import { getOppositeDirection } from "./direction";
-import { getVerticalMoveTypeForCheckpointTypes } from "./vertical";
+import type { CheckpointType, Direction, MoveType } from "./types.js";
+
+import { getOppositeDirection } from "./direction.js";
+import { getVerticalMoveTypeForCheckpointTypes } from "./vertical.js";
 
 export type ValidationHospitalRow = {
   id: string;

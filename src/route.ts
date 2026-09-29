@@ -1,11 +1,11 @@
 import type {
   Checkpoint,
   Destination,
-  DisplayRouteStep,
   HospitalData,
   MoveType,
   RouteOptions,
-} from "./types";
+  DisplayRouteStep,
+} from "./types.js";
 
 function getZoneMap(hospitalData: HospitalData) {
   return Object.fromEntries(

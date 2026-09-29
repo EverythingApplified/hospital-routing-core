@@ -1,4 +1,4 @@
-import type { CheckpointType, Direction, MoveType } from "./types";
+import type { CheckpointType, Direction, MoveType } from "./types.js";
 export type ValidationHospitalRow = {
     id: string;
     name: string;

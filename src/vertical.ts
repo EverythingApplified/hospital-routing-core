@@ -1,4 +1,4 @@
-import type { CheckpointType, MoveType } from "./types";
+import type { CheckpointType, MoveType } from "./types.js";
 
 export function getVerticalMoveTypeForCheckpointTypes(
   fromType: CheckpointType,

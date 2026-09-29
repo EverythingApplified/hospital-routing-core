@@ -1,5 +1,5 @@
-import { getOppositeDirection } from "./direction";
-import { getVerticalMoveTypeForCheckpointTypes } from "./vertical";
+import { getOppositeDirection } from "./direction.js";
+import { getVerticalMoveTypeForCheckpointTypes } from "./vertical.js";
 export function validateHospitalGraph(hospital, zones, floors, checkpoints, links, destinations) {
     const issues = [];
     if (!hospital || checkpoints.length === 0) {

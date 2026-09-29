@@ -1,4 +1,4 @@
-import type { Direction } from "./types";
+import type { Direction } from "./types.js";
 
 export function getOppositeDirection(direction: Direction): Direction {
   switch (direction) {
