@@ -316,3 +316,51 @@ test("validator rejects a vertical link on the same floor", () => {
     true,
   );
 });
+
+
+test("consecutive lift floors are compressed into one visible step", () => {
+  const route = [
+    {
+      kind: "checkpoint_display",
+      fromCheckpointId: "lift-l3",
+      toCheckpointId: "lift-l4",
+      moveType: "lift",
+      travelDirection: "up",
+      viaCheckpointIds: [],
+    },
+    {
+      kind: "checkpoint_display",
+      fromCheckpointId: "lift-l4",
+      toCheckpointId: "lift-l5",
+      moveType: "lift",
+      travelDirection: "up",
+      viaCheckpointIds: [],
+    },
+    {
+      kind: "destination",
+      checkpointId: "lift-l5",
+      destination: {
+        id: "destination-l5",
+        name: "Level 5 destination",
+        checkpointId: "lift-l5",
+        direction: "east",
+      },
+    },
+  ];
+
+  const compressed = compressRouteSteps(route);
+
+  assert.equal(compressed.length, 2);
+
+  const liftStep = compressed[0];
+
+  assert.equal(liftStep.kind, "checkpoint_display");
+
+  if (liftStep.kind === "checkpoint_display") {
+    assert.equal(liftStep.fromCheckpointId, "lift-l3");
+    assert.equal(liftStep.toCheckpointId, "lift-l5");
+    assert.equal(liftStep.moveType, "lift");
+    assert.equal(liftStep.travelDirection, "up");
+    assert.deepEqual(liftStep.viaCheckpointIds, ["lift-l4"]);
+  }
+});
