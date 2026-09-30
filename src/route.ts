@@ -33,6 +33,25 @@ function isStraightLike(moveType: MoveType) {
   return moveType === "straight" || moveType === "continue";
 }
 
+function isMergeableVerticalStep(
+  previous: Extract<DisplayRouteStep, { kind: "checkpoint_display" }>,
+  step: Extract<DisplayRouteStep, { kind: "checkpoint_display" }>,
+) {
+  const isSameVerticalMove =
+    previous.moveType === step.moveType &&
+    (step.moveType === "lift" || step.moveType === "stairs");
+
+  const isSameVerticalDirection =
+    previous.travelDirection === step.travelDirection &&
+    (step.travelDirection === "up" || step.travelDirection === "down");
+
+  return (
+    isSameVerticalMove &&
+    isSameVerticalDirection &&
+    previous.toCheckpointId === step.fromCheckpointId
+  );
+}
+
 function getExitBetween(
   fromCheckpointId: string,
   toCheckpointId: string,
@@ -232,6 +251,20 @@ export function compressRouteSteps(
       ];
       last.toCheckpointId = step.toCheckpointId;
       last.moveType = "continue";
+      continue;
+    }
+
+    if (
+      last &&
+      last.kind === "checkpoint_display" &&
+      isMergeableVerticalStep(last, step)
+    ) {
+      last.viaCheckpointIds = [
+        ...last.viaCheckpointIds,
+        last.toCheckpointId,
+        ...step.viaCheckpointIds,
+      ];
+      last.toCheckpointId = step.toCheckpointId;
       continue;
     }
 
