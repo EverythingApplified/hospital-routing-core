@@ -3,6 +3,7 @@ export type Direction = "north" | "south" | "east" | "west" | "up" | "down";
 export type HorizontalDirection = "north" | "south" | "east" | "west";
 export type VerticalDirection = "up" | "down";
 export type MoveType = "straight" | "continue" | "turn_left" | "turn_right" | "enter" | "exit" | "lift" | "stairs";
+export type OrientationMode = "directional" | "non_directional";
 export type CheckpointType = "entrance" | "junction" | "corridor" | "lift_lobby" | "stairs_lobby" | "room_entry";
 export type DestinationType = "standard" | "toilet";
 export type Exit = {
@@ -45,6 +46,7 @@ export type Checkpoint = {
     name: string;
     displayName?: string;
     instructionHint?: string;
+    orientationMode?: OrientationMode;
     image?: unknown;
     imageUrl?: string;
     directionalImages?: DirectionalCheckpointImage[];
