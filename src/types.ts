@@ -16,6 +16,8 @@ export type MoveType =
   | "lift"
   | "stairs";
 
+export type OrientationMode = "directional" | "non_directional";
+
 export type CheckpointType =
   | "entrance"
   | "junction"
@@ -71,6 +73,7 @@ export type Checkpoint = {
   name: string;
   displayName?: string;
   instructionHint?: string;
+  orientationMode?: OrientationMode;
   image?: unknown;
   imageUrl?: string;
   directionalImages?: DirectionalCheckpointImage[];
