@@ -11,6 +11,15 @@ function getDestinationMap(checkpoints) {
 function isStraightLike(moveType) {
     return moveType === "straight" || moveType === "continue";
 }
+function isMergeableVerticalStep(previous, step) {
+    const isSameVerticalMove = previous.moveType === step.moveType &&
+        (step.moveType === "lift" || step.moveType === "stairs");
+    const isSameVerticalDirection = previous.travelDirection === step.travelDirection &&
+        (step.travelDirection === "up" || step.travelDirection === "down");
+    return (isSameVerticalMove &&
+        isSameVerticalDirection &&
+        previous.toCheckpointId === step.fromCheckpointId);
+}
 function getExitBetween(fromCheckpointId, toCheckpointId, checkpointMap) {
     const fromCheckpoint = checkpointMap[fromCheckpointId];
     return fromCheckpoint?.exits.find((exit) => exit.to === toCheckpointId);
@@ -139,6 +148,17 @@ export function compressRouteSteps(route) {
             ];
             last.toCheckpointId = step.toCheckpointId;
             last.moveType = "continue";
+            continue;
+        }
+        if (last &&
+            last.kind === "checkpoint_display" &&
+            isMergeableVerticalStep(last, step)) {
+            last.viaCheckpointIds = [
+                ...last.viaCheckpointIds,
+                last.toCheckpointId,
+                ...step.viaCheckpointIds,
+            ];
+            last.toCheckpointId = step.toCheckpointId;
             continue;
         }
         compressed.push({ ...step });
