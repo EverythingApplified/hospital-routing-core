@@ -40,9 +40,6 @@ function getStepCost(fromCheckpoint, toCheckpoint, moveType, hospitalData, optio
         toZone?.type === "outdoor") {
         cost += 4;
     }
-    if (options.avoidStairs && moveType === "stairs") {
-        cost += 50;
-    }
     return cost;
 }
 function buildCheckpointPath(startCheckpointId, endCheckpointId, hospitalData, checkpointMap, options) {
@@ -79,6 +76,8 @@ function buildCheckpointPath(startCheckpointId, endCheckpointId, hospitalData, c
         if (!currentCheckpoint)
             continue;
         for (const exit of currentCheckpoint.exits) {
+            if (options.avoidStairs && exit.moveType === "stairs")
+                continue;
             if (!unvisited.has(exit.to))
                 continue;
             const targetCheckpoint = checkpointMap[exit.to];
