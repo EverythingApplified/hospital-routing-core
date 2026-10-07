@@ -364,3 +364,63 @@ test("consecutive lift floors are compressed into one visible step", () => {
     assert.deepEqual(liftStep.viaCheckpointIds, ["lift-l4"]);
   }
 });
+
+
+test("avoid stairs returns no route when stairs are the only vertical option", () => {
+  const hospitalData = {
+    id: "hospital-1",
+    name: "Test Hospital",
+    zones: [
+      {
+        id: "zone-1",
+        hospitalId: "hospital-1",
+        name: "Main Building",
+        type: "building",
+      },
+    ],
+    checkpoints: [
+      {
+        id: "ground",
+        zoneId: "zone-1",
+        floor: "Ground",
+        name: "Ground stairs",
+        type: "stairs_lobby",
+        exits: [
+          {
+            direction: "up",
+            to: "first",
+            moveType: "stairs",
+          },
+        ],
+      },
+      {
+        id: "first",
+        zoneId: "zone-1",
+        floor: "First",
+        name: "First floor",
+        type: "stairs_lobby",
+        exits: [],
+        destinations: [
+          {
+            id: "destination",
+            name: "First floor destination",
+            checkpointId: "first",
+            direction: "east",
+          },
+        ],
+      },
+    ],
+  };
+
+  const route = getRouteFromCheckpoint(
+    "ground",
+    "destination",
+    hospitalData,
+    {
+      preferIndoor: true,
+      avoidStairs: true,
+    },
+  );
+
+  assert.deepEqual(route, []);
+});
